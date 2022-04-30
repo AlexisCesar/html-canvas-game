@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="400" height="400" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+    var cuboLargura = 40
+    var cuboAltura = 40
+    var doisCubos = [0, 1]
+
+    var tamanhoDoMeuMapa = 10
+    const meuMapa = new Array(tamanhoDoMeuMapa).fill(new Array(tamanhoDoMeuMapa).fill(0));
+
+    var meuCanvas = document.getElementById("myCanvas");
+    var ctx = meuCanvas.getContext("2d");
+    
+    var coordenadaX = 0
+    var coordenadaY = 0
+
+    meuMapa.forEach(linha => {
+        linha.forEach(pixel => {
+            ctx.beginPath();
+            ctx.rect(coordenadaX, coordenadaY, cuboLargura, cuboAltura);
+            ctx.fillStyle = "#999999";
+            ctx.fillRect(coordenadaX, coordenadaY, cuboLargura, cuboAltura)
+            ctx.stroke();
+            coordenadaX += cuboLargura;
+        });
+        coordenadaX = 0;
+        coordenadaY += cuboAltura;
+    });
+
+</script> 
+
+</body>
+</html>
