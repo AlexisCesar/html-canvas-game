@@ -19,7 +19,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     var coordenadaX = 0
     var coordenadaY = 0
 
-    meuMapa.forEach(linha => {
+    const gerarMapa = () => {
+        // Gera o mapa padrão
+        meuMapa.forEach(linha => {
         linha.forEach(pixel => {
             ctx.beginPath();
             ctx.rect(coordenadaX, coordenadaY, cuboLargura, cuboAltura);
@@ -31,6 +33,32 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         coordenadaX = 0;
         coordenadaY += cuboAltura;
     });
+
+    // Gera as paredes
+    /*    
+    for layer in map:
+        if layer[0] == 0 or layer[0] == (DEFAULT_MAP_SIZE - 1):
+            layer_aux = list()
+            layer_aux.append(layer[0])
+            for i in range(DEFAULT_MAP_SIZE):
+                layer_aux.append(WALL)
+            map[map.index(layer)] = layer_aux
+        for index, column in enumerate(layer):
+            if index == 1 or index == (DEFAULT_MAP_SIZE):
+                layer[index] = WALL
+    
+    */
+   meuMapa.forEach(linha => {
+       
+   });
+
+
+    };
+
+    window.onload = function() {
+        gerarMapa();
+    }
+
 
 </script> 
 
