@@ -7,11 +7,42 @@ var mapSize = 10
 const FLOOR = 0;
 const WALL = 1;
 const DOOR = 2;
+const PLAYER = 3;
+
+// Player
+var playerRow = mapSize - 2;
+var playerColumn = parseInt(mapSize / 2);
 
 var gameMap = null;
 
 var canvas = document.getElementById("game");
 var canvasContext = canvas.getContext("2d");
+
+const drawMap = () => {
+    // Draw
+    var xCoordinate = 0
+    var yCoordinate = 0
+
+    gameMap.forEach(row => {
+        row.forEach(tile => {
+            canvasContext.beginPath();
+            canvasContext.rect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+            if (tile == FLOOR)
+                canvasContext.fillStyle = "#f7d9a3";
+            else if (tile == WALL)
+                canvasContext.fillStyle = "#a8a8a8";
+            else if (tile == DOOR)
+                canvasContext.fillStyle = "#23e84a";
+            else if (tile == PLAYER)
+                canvasContext.fillStyle = "#0335fc";
+            canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight)
+            canvasContext.stroke();
+            xCoordinate += tileWidth;
+        });
+        xCoordinate = 0;
+        yCoordinate += tileHeight;
+    });
+};
 
 const generateMap = () => {
     // Create default map
@@ -51,30 +82,42 @@ const generateMap = () => {
         gameMap[door_location_index][mapSize - 1] = DOOR;
     }
 
-    // Draw
-    var xCoordinate = 0
-    var yCoordinate = 0
-
-    gameMap.forEach(row => {
-        row.forEach(tile => {
-            canvasContext.beginPath();
-            canvasContext.rect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-            if (tile == FLOOR)
-                canvasContext.fillStyle = "#f7d9a3";
-            else if (tile == WALL)
-                canvasContext.fillStyle = "#a8a8a8";
-            else if (tile == DOOR)
-                canvasContext.fillStyle = "#23e84a";
-            canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight)
-            canvasContext.stroke();
-            xCoordinate += tileWidth;
-        });
-        xCoordinate = 0;
-        yCoordinate += tileHeight;
-    });
-
+    drawMap();
 };
 
 window.onload = function () {
     generateMap();
+    gameMap[playerRow][playerColumn] = PLAYER;
+    drawMap();
+
+    document.addEventListener('keypress', (event) => {
+        var code = event.code;
+
+        if(code == 'KeyW') {
+            if(gameMap[playerRow - 1][playerColumn] == FLOOR) {
+                gameMap[playerRow][playerColumn] = FLOOR;
+                playerRow -= 1;
+                gameMap[playerRow][playerColumn] = PLAYER;
+            }
+        } else if(code == 'KeyA') {
+            if(gameMap[playerRow][playerColumn - 1] == FLOOR) {
+                gameMap[playerRow][playerColumn] = FLOOR;
+                playerColumn -= 1;
+                gameMap[playerRow][playerColumn] = PLAYER;
+            }
+        } else if(code == 'KeyS') {
+            if(gameMap[playerRow + 1][playerColumn] == FLOOR) {
+                gameMap[playerRow][playerColumn] = FLOOR;
+                playerRow += 1;
+                gameMap[playerRow][playerColumn] = PLAYER;
+            }
+        } else if(code == 'KeyD') {
+            if(gameMap[playerRow][playerColumn + 1] == FLOOR) {
+                gameMap[playerRow][playerColumn] = FLOOR;
+                playerColumn += 1;
+                gameMap[playerRow][playerColumn] = PLAYER;
+            }
+        }
+        drawMap();
+    }, false);
 }
