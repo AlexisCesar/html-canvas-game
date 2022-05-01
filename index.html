@@ -1,66 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <body>
 
-<canvas id="myCanvas" width="400" height="400" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
+    <div style="display: flex; justify-content: center;">
+        <canvas id="game" width="400" height="400" style="border:1px solid #000000;">
+            Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
 
-<script>
-    var cuboLargura = 40
-    var cuboAltura = 40
-    var doisCubos = [0, 1]
-
-    var tamanhoDoMeuMapa = 10
-    const meuMapa = new Array(tamanhoDoMeuMapa).fill(new Array(tamanhoDoMeuMapa).fill(0));
-
-    var meuCanvas = document.getElementById("myCanvas");
-    var ctx = meuCanvas.getContext("2d");
-    
-    var coordenadaX = 0
-    var coordenadaY = 0
-
-    const gerarMapa = () => {
-        // Gera o mapa padrão
-        meuMapa.forEach(linha => {
-        linha.forEach(pixel => {
-            ctx.beginPath();
-            ctx.rect(coordenadaX, coordenadaY, cuboLargura, cuboAltura);
-            ctx.fillStyle = "#999999";
-            ctx.fillRect(coordenadaX, coordenadaY, cuboLargura, cuboAltura)
-            ctx.stroke();
-            coordenadaX += cuboLargura;
-        });
-        coordenadaX = 0;
-        coordenadaY += cuboAltura;
-    });
-
-    // Gera as paredes
-    /*    
-    for layer in map:
-        if layer[0] == 0 or layer[0] == (DEFAULT_MAP_SIZE - 1):
-            layer_aux = list()
-            layer_aux.append(layer[0])
-            for i in range(DEFAULT_MAP_SIZE):
-                layer_aux.append(WALL)
-            map[map.index(layer)] = layer_aux
-        for index, column in enumerate(layer):
-            if index == 1 or index == (DEFAULT_MAP_SIZE):
-                layer[index] = WALL
-    
-    */
-   meuMapa.forEach(linha => {
-       
-   });
-
-
-    };
-
-    window.onload = function() {
-        gerarMapa();
-    }
-
-
-</script> 
+    <script type="text/javascript" src="main.js"></script>
 
 </body>
+
 </html>
