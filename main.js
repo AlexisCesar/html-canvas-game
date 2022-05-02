@@ -10,11 +10,18 @@ const DOOR = 2;
 const PLAYER = 3;
 const COIN = 4;
 const LIFE_POTION = 5;
-const PASSABLE_OBJECTS = [FLOOR, COIN, LIFE_POTION];
+const MONSTER = 6;
+const PASSABLE_OBJECTS = [FLOOR, COIN, LIFE_POTION, MONSTER];
 
 // Player
 var playerRow = mapSize - 2;
 var playerColumn = parseInt(mapSize / 2);
+
+// Game status
+var playerMoney = 0;
+var playerHP = 100;
+var playerKills = 0;
+var currentRoom = 1;
 
 // Sprites
 var playerSprite = new Image();
@@ -25,6 +32,9 @@ coinSprite.src = './images/coin.png';
 
 var lifePotionSprite = new Image();
 lifePotionSprite.src = './images/potion.png';
+
+var monsterSprite = new Image();
+monsterSprite.src = './images/monster.png';
 
 var gameMap = null;
 
@@ -72,6 +82,12 @@ const drawMap = () => {
                 canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
                 
                 canvasContext.drawImage(lifePotionSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == MONSTER) {
+                canvasContext.fillStyle = "#f7d9a3";
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                
+                canvasContext.drawImage(monsterSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
             canvasContext.stroke();
@@ -124,6 +140,17 @@ const generateMap = () => {
         gameMap[door_location_index][mapSize - 1] = DOOR;
     }
 
+    gameMapIndexes = [...Array(mapSize).keys()]
+    gameMapIndexes = gameMapIndexes.slice(1, -1);
+
+    // Generate random monsters
+    let monstersOnMap = getRndInteger(currentRoom, currentRoom * 2);
+    for (i = 0; i < monstersOnMap; i++) {
+        let randomRow = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        let randomColumn = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        gameMap[randomRow][randomColumn] = MONSTER;
+    }
+
     // Generate random coins
     let coinsOnMap = getRndInteger(2, 5);
     for (i = 0; i < coinsOnMap; i++) {
@@ -132,7 +159,7 @@ const generateMap = () => {
         gameMap[randomRow][randomColumn] = COIN;
     }
 
-    // Generate random coins
+    // Generate random life potions
     let potionsOnMap = getRndInteger(3, 6);
     for (i = 0; i < potionsOnMap; i++) {
         let randomRow = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
@@ -158,6 +185,7 @@ window.onload = function () {
             else if(gameMap[playerRow - 1][playerColumn] == DOOR) {
                 generateMap();
                 playerRow = mapSize - 2;
+                currentRoom++;
             }
         } else if(code == 'KeyA') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn - 1])) {
@@ -166,6 +194,7 @@ window.onload = function () {
             } else if(gameMap[playerRow][playerColumn - 1] == DOOR) {
                 generateMap();
                 playerColumn = mapSize - 2;
+                currentRoom++;
             }
         } else if(code == 'KeyS') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow + 1][playerColumn])) {
@@ -174,6 +203,7 @@ window.onload = function () {
             } else if(gameMap[playerRow + 1][playerColumn] == DOOR) {
                 generateMap();
                 playerRow = 1;
+                currentRoom++;
             }
         } else if(code == 'KeyD') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn + 1])) {
@@ -182,6 +212,7 @@ window.onload = function () {
             } else if (gameMap[playerRow][playerColumn + 1] == DOOR) {
                 generateMap();
                 playerColumn = 1;
+                currentRoom++;
             }
         }
 
