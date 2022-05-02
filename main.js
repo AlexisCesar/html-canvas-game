@@ -8,13 +8,19 @@ const FLOOR = 0;
 const WALL = 1;
 const DOOR = 2;
 const PLAYER = 3;
-const PASSABLE_OBJECTS = [FLOOR];
+const COIN = 4;
+const PASSABLE_OBJECTS = [FLOOR, COIN];
 
 // Player
-var playerSprite = new Image();
-playerSprite.src = './images/player.png';
 var playerRow = mapSize - 2;
 var playerColumn = parseInt(mapSize / 2);
+
+// Sprites
+var playerSprite = new Image();
+playerSprite.src = './images/player.png';
+
+var coinSprite = new Image();
+coinSprite.src = './images/coin.png';
 
 var gameMap = null;
 
@@ -46,11 +52,16 @@ const drawMap = () => {
                 canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == PLAYER) {
-                //canvasContext.fillStyle = "#0335fc";
                 canvasContext.fillStyle = "#f7d9a3";
                 canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
                 
                 canvasContext.drawImage(playerSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == COIN) {
+                canvasContext.fillStyle = "#f7d9a3";
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                
+                canvasContext.drawImage(coinSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
             canvasContext.stroke();
@@ -60,6 +71,10 @@ const drawMap = () => {
         yCoordinate += tileHeight;
     });
 };
+
+const getRndInteger = (min, max) => {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
 
 const generateMap = () => {
     // Create default map
@@ -99,7 +114,14 @@ const generateMap = () => {
         gameMap[door_location_index][mapSize - 1] = DOOR;
     }
 
-    //drawMap();
+    // Generate random coins
+    let coinsOnMap = getRndInteger(2, 5);
+    for (i = 0; i < coinsOnMap; i++) {
+        let randomRow = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        let randomColumn = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        gameMap[randomRow][randomColumn] = COIN;
+    }
+
 };
 
 window.onload = function () {
