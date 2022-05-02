@@ -1,6 +1,6 @@
 // Sizes definitions
-var tileWidth = 40
-var tileHeight = 40
+var tileWidth = 64
+var tileHeight = 64
 var mapSize = 10
 
 // Map objects
@@ -11,6 +11,8 @@ const PLAYER = 3;
 const PASSABLE_OBJECTS = [FLOOR];
 
 // Player
+var playerSprite = new Image();
+playerSprite.src = './images/player.png';
 var playerRow = mapSize - 2;
 var playerColumn = parseInt(mapSize / 2);
 
@@ -31,15 +33,26 @@ const drawMap = () => {
         row.forEach(tile => {
             canvasContext.beginPath();
             canvasContext.rect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-            if (tile == FLOOR)
+            if (tile == FLOOR) {
                 canvasContext.fillStyle = "#f7d9a3";
-            else if (tile == WALL)
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == WALL) {
                 canvasContext.fillStyle = "#a8a8a8";
-            else if (tile == DOOR)
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == DOOR) {
                 canvasContext.fillStyle = "#23e84a";
-            else if (tile == PLAYER)
-                canvasContext.fillStyle = "#0335fc";
-            canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight)
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == PLAYER) {
+                //canvasContext.fillStyle = "#0335fc";
+                canvasContext.fillStyle = "#f7d9a3";
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                
+                canvasContext.drawImage(playerSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            
             canvasContext.stroke();
             xCoordinate += tileWidth;
         });
