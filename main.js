@@ -9,7 +9,8 @@ const WALL = 1;
 const DOOR = 2;
 const PLAYER = 3;
 const COIN = 4;
-const PASSABLE_OBJECTS = [FLOOR, COIN];
+const LIFE_POTION = 5;
+const PASSABLE_OBJECTS = [FLOOR, COIN, LIFE_POTION];
 
 // Player
 var playerRow = mapSize - 2;
@@ -21,6 +22,9 @@ playerSprite.src = './images/player.png';
 
 var coinSprite = new Image();
 coinSprite.src = './images/coin.png';
+
+var lifePotionSprite = new Image();
+lifePotionSprite.src = './images/potion.png';
 
 var gameMap = null;
 
@@ -62,6 +66,12 @@ const drawMap = () => {
                 canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
                 
                 canvasContext.drawImage(coinSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
+            }
+            else if (tile == LIFE_POTION) {
+                canvasContext.fillStyle = "#f7d9a3";
+                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                
+                canvasContext.drawImage(lifePotionSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
             canvasContext.stroke();
@@ -120,6 +130,14 @@ const generateMap = () => {
         let randomRow = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
         let randomColumn = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
         gameMap[randomRow][randomColumn] = COIN;
+    }
+
+    // Generate random coins
+    let potionsOnMap = getRndInteger(3, 6);
+    for (i = 0; i < potionsOnMap; i++) {
+        let randomRow = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        let randomColumn = gameMapIndexes[Math.floor(Math.random() * gameMapIndexes.length)];
+        gameMap[randomRow][randomColumn] = LIFE_POTION;
     }
 
 };
