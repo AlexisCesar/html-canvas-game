@@ -36,6 +36,13 @@ lifePotionSprite.src = './images/potion.png';
 var monsterSprite = new Image();
 monsterSprite.src = './images/monster.png';
 
+var floorSprite = new Image();
+floorSprite.src = './images/floor.png';
+
+var wallSprite = new Image();
+wallSprite.src = './images/wall.png';
+
+
 var gameMap = null;
 
 var canvas = document.getElementById("game");
@@ -54,39 +61,28 @@ const drawMap = () => {
             canvasContext.beginPath();
             canvasContext.rect(xCoordinate, yCoordinate, tileWidth, tileHeight);
             if (tile == FLOOR) {
-                canvasContext.fillStyle = "#f7d9a3";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == WALL) {
-                canvasContext.fillStyle = "#a8a8a8";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                canvasContext.drawImage(wallSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == DOOR) {
-                canvasContext.fillStyle = "#23e84a";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == PLAYER) {
-                canvasContext.fillStyle = "#f7d9a3";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-                
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);                
                 canvasContext.drawImage(playerSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == COIN) {
-                canvasContext.fillStyle = "#f7d9a3";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-                
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
                 canvasContext.drawImage(coinSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == LIFE_POTION) {
-                canvasContext.fillStyle = "#f7d9a3";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-                
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
                 canvasContext.drawImage(lifePotionSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             else if (tile == MONSTER) {
-                canvasContext.fillStyle = "#f7d9a3";
-                canvasContext.fillRect(xCoordinate, yCoordinate, tileWidth, tileHeight);
-                
+                canvasContext.drawImage(floorSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
                 canvasContext.drawImage(monsterSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
