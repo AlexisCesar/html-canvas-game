@@ -86,7 +86,7 @@ const drawMap = () => {
                 canvasContext.drawImage(monsterSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
-            canvasContext.stroke();
+            //canvasContext.stroke();
             xCoordinate += tileWidth;
         });
         xCoordinate = 0;
