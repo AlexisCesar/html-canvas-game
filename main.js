@@ -8,6 +8,7 @@ const FLOOR = 0;
 const WALL = 1;
 const DOOR = 2;
 const PLAYER = 3;
+const PASSABLE_OBJECTS = [FLOOR];
 
 // Player
 var playerRow = mapSize - 2;
@@ -19,6 +20,9 @@ var canvas = document.getElementById("game");
 var canvasContext = canvas.getContext("2d");
 
 const drawMap = () => {
+    if (gameMap == null) {
+        return;
+    }
     // Draw
     var xCoordinate = 0
     var yCoordinate = 0
@@ -82,7 +86,7 @@ const generateMap = () => {
         gameMap[door_location_index][mapSize - 1] = DOOR;
     }
 
-    drawMap();
+    //drawMap();
 };
 
 window.onload = function () {
@@ -94,30 +98,43 @@ window.onload = function () {
         var code = event.code;
 
         if(code == 'KeyW') {
-            if(gameMap[playerRow - 1][playerColumn] == FLOOR) {
+            if(PASSABLE_OBJECTS.includes(gameMap[playerRow - 1][playerColumn])) {
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow -= 1;
-                gameMap[playerRow][playerColumn] = PLAYER;
+            }
+            else if(gameMap[playerRow - 1][playerColumn] == DOOR) {
+                generateMap();
+                playerRow = mapSize - 2;
             }
         } else if(code == 'KeyA') {
-            if(gameMap[playerRow][playerColumn - 1] == FLOOR) {
+            if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn - 1])) {
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn -= 1;
-                gameMap[playerRow][playerColumn] = PLAYER;
+            } else if(gameMap[playerRow][playerColumn - 1] == DOOR) {
+                generateMap();
+                playerColumn = mapSize - 2;
             }
         } else if(code == 'KeyS') {
-            if(gameMap[playerRow + 1][playerColumn] == FLOOR) {
+            if(PASSABLE_OBJECTS.includes(gameMap[playerRow + 1][playerColumn])) {
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow += 1;
-                gameMap[playerRow][playerColumn] = PLAYER;
+            } else if(gameMap[playerRow + 1][playerColumn] == DOOR) {
+                generateMap();
+                playerRow = 1;
             }
         } else if(code == 'KeyD') {
-            if(gameMap[playerRow][playerColumn + 1] == FLOOR) {
+            if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn + 1])) {
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn += 1;
-                gameMap[playerRow][playerColumn] = PLAYER;
+            } else if (gameMap[playerRow][playerColumn + 1] == DOOR) {
+                generateMap();
+                playerColumn = 1;
             }
         }
+
+        // Changes player pos if moved
+        gameMap[playerRow][playerColumn] = PLAYER;
+
         drawMap();
     }, false);
 }
