@@ -1,3 +1,17 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function refreshPageCountdown() {
+    let reloadTime = 10;
+    for (let i = 0; i < 10; i++) {
+        reloadTime--;
+        document.getElementById('reloadTime').innerHTML = reloadTime;
+        await sleep(1000);
+    }
+    window.location.reload(true);
+}
+
 // Sizes definitions
 var tileWidth = 64
 var tileHeight = 64
@@ -91,7 +105,6 @@ const drawMap = () => {
                 canvasContext.drawImage(monsterSprite, xCoordinate, yCoordinate, tileWidth, tileHeight);
             }
             
-            //canvasContext.stroke();
             xCoordinate += tileWidth;
         });
         xCoordinate = 0;
@@ -175,6 +188,12 @@ window.onload = function () {
     gameMap[playerRow][playerColumn] = PLAYER;
     drawMap();
 
+    // Update game stats
+    document.getElementById('HP').innerHTML = playerHP;
+    document.getElementById('money').innerHTML = playerMoney;
+    document.getElementById('room').innerHTML = currentRoom;
+    document.getElementById('kills').innerHTML = playerKills;
+
     document.addEventListener('keypress', (event) => {
         var code = event.code;
 
@@ -182,10 +201,14 @@ window.onload = function () {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow - 1][playerColumn])) {
                 if(gameMap[playerRow - 1][playerColumn] == LIFE_POTION) {
                     consumePotionAudio.play();
+                    playerHP = playerHP >= 95 ? 100 : playerHP + 5;
                 } else if(gameMap[playerRow - 1][playerColumn] == COIN) {
                     collectMoneyAudio.play();
+                    playerMoney++;
                 } else if(gameMap[playerRow - 1][playerColumn] == MONSTER) {
                     takeDamageAudio.play();
+                    playerKills++;
+                    playerHP -= 10;
                 }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow -= 1;
@@ -200,10 +223,14 @@ window.onload = function () {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn - 1])) {
                 if(gameMap[playerRow][playerColumn - 1] == LIFE_POTION) {
                     consumePotionAudio.play();
+                    playerHP = playerHP >= 95 ? 100 : playerHP + 5;
                 } else if(gameMap[playerRow][playerColumn - 1] == COIN) {
                     collectMoneyAudio.play();
+                    playerMoney++;
                 } else if(gameMap[playerRow][playerColumn - 1] == MONSTER) {
                     takeDamageAudio.play();
+                    playerKills++;
+                    playerHP -= 10;
                 }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn -= 1;
@@ -217,10 +244,14 @@ window.onload = function () {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow + 1][playerColumn])) {
                 if(gameMap[playerRow + 1][playerColumn] == LIFE_POTION) {
                     consumePotionAudio.play();
+                    playerHP = playerHP >= 95 ? 100 : playerHP + 5;
                 } else if(gameMap[playerRow + 1][playerColumn] == COIN) {
                     collectMoneyAudio.play();
+                    playerMoney++;
                 } else if(gameMap[playerRow + 1][playerColumn] == MONSTER) {
                     takeDamageAudio.play();
+                    playerKills++;
+                    playerHP -= 10;
                 }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow += 1;
@@ -234,10 +265,14 @@ window.onload = function () {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn + 1])) {
                 if(gameMap[playerRow][playerColumn + 1] == LIFE_POTION) {
                     consumePotionAudio.play();
+                    playerHP = playerHP >= 95 ? 100 : playerHP + 5;
                 } else if(gameMap[playerRow][playerColumn + 1] == COIN) {
                     collectMoneyAudio.play();
+                    playerMoney++;
                 } else if(gameMap[playerRow][playerColumn + 1] == MONSTER) {
                     takeDamageAudio.play();
+                    playerKills++;
+                    playerHP -= 10;
                 }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn += 1;
@@ -249,9 +284,23 @@ window.onload = function () {
             }
         }
 
+        if (playerHP <= 0) {
+            let reloadTime = 10;
+            document.getElementById('deathRoom').innerHTML = currentRoom;
+            document.getElementById('reloadTime').innerHTML = reloadTime;
+            document.getElementById('death').style.visibility = 'visible';
+            refreshPageCountdown();
+        }
+
         // Changes player pos if moved
         gameMap[playerRow][playerColumn] = PLAYER;
 
         drawMap();
+
+        // Update game stats
+        document.getElementById('HP').innerHTML = playerHP;
+        document.getElementById('money').innerHTML = playerMoney;
+        document.getElementById('room').innerHTML = currentRoom;
+        document.getElementById('kills').innerHTML = playerKills;
     }, false);
 }

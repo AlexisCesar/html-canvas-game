@@ -3,9 +3,28 @@
 
 <body style="background-color: #000000;">
 
+    <div style="color: #adadad; display: flex; justify-content: center;">
+        <p>Move with WASD</p>
+    </div>
+    <div style="color: #adadad; display: flex; justify-content: center;">
+        <p>At what room will you die?</p>
+    </div>
+
+    <div id="death" style="visibility: hidden; color: #bd2d2d; display: flex; justify-content: center;">
+        <p>You died at #<a id="deathRoom"></a> room. Page reloading in <a id="reloadTime"></a>...</p>
+    </div>
+
     <div style="display: flex; justify-content: center;">
+        
         <canvas id="game" width="640" height="640" style="border:1px solid #000000;">
             Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
+
+    <div style="color: #adadad; display: flex; justify-content: center;">
+        <p>HP: <p style="margin-left: 10px;" id="HP"></p></p>
+        <p style="margin-left: 20px;">Money: <p style="margin-left: 10px;" id="money"></p></p>
+        <p style="margin-left: 20px;">Current Room: <p style="margin-left: 10px;" id="room"></p></p>
+        <p style="margin-left: 20px;">Kills: <p style="margin-left: 10px;" id="kills"></p></p>
     </div>
 
     <script type="text/javascript" src="main.js"></script>
