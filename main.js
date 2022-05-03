@@ -42,6 +42,11 @@ floorSprite.src = './images/floor.png';
 var wallSprite = new Image();
 wallSprite.src = './images/wall.png';
 
+// Sounds
+var enterRoomAudio = new Audio('./sounds/enter_room.wav');
+var consumePotionAudio = new Audio('./sounds/consume_potion.wav');
+var collectMoneyAudio = new Audio('./sounds/collect_money.wav');
+var takeDamageAudio = new Audio('./sounds/take_damage.wav');
 
 var gameMap = null;
 
@@ -175,6 +180,13 @@ window.onload = function () {
 
         if(code == 'KeyW') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow - 1][playerColumn])) {
+                if(gameMap[playerRow - 1][playerColumn] == LIFE_POTION) {
+                    consumePotionAudio.play();
+                } else if(gameMap[playerRow - 1][playerColumn] == COIN) {
+                    collectMoneyAudio.play();
+                } else if(gameMap[playerRow - 1][playerColumn] == MONSTER) {
+                    takeDamageAudio.play();
+                }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow -= 1;
             }
@@ -182,33 +194,58 @@ window.onload = function () {
                 generateMap();
                 playerRow = mapSize - 2;
                 currentRoom++;
+                enterRoomAudio.play();
             }
         } else if(code == 'KeyA') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn - 1])) {
+                if(gameMap[playerRow][playerColumn - 1] == LIFE_POTION) {
+                    consumePotionAudio.play();
+                } else if(gameMap[playerRow][playerColumn - 1] == COIN) {
+                    collectMoneyAudio.play();
+                } else if(gameMap[playerRow][playerColumn - 1] == MONSTER) {
+                    takeDamageAudio.play();
+                }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn -= 1;
             } else if(gameMap[playerRow][playerColumn - 1] == DOOR) {
                 generateMap();
                 playerColumn = mapSize - 2;
                 currentRoom++;
+                enterRoomAudio.play();
             }
         } else if(code == 'KeyS') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow + 1][playerColumn])) {
+                if(gameMap[playerRow + 1][playerColumn] == LIFE_POTION) {
+                    consumePotionAudio.play();
+                } else if(gameMap[playerRow + 1][playerColumn] == COIN) {
+                    collectMoneyAudio.play();
+                } else if(gameMap[playerRow + 1][playerColumn] == MONSTER) {
+                    takeDamageAudio.play();
+                }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerRow += 1;
             } else if(gameMap[playerRow + 1][playerColumn] == DOOR) {
                 generateMap();
                 playerRow = 1;
                 currentRoom++;
+                enterRoomAudio.play();
             }
         } else if(code == 'KeyD') {
             if(PASSABLE_OBJECTS.includes(gameMap[playerRow][playerColumn + 1])) {
+                if(gameMap[playerRow][playerColumn + 1] == LIFE_POTION) {
+                    consumePotionAudio.play();
+                } else if(gameMap[playerRow][playerColumn + 1] == COIN) {
+                    collectMoneyAudio.play();
+                } else if(gameMap[playerRow][playerColumn + 1] == MONSTER) {
+                    takeDamageAudio.play();
+                }
                 gameMap[playerRow][playerColumn] = FLOOR;
                 playerColumn += 1;
             } else if (gameMap[playerRow][playerColumn + 1] == DOOR) {
                 generateMap();
                 playerColumn = 1;
                 currentRoom++;
+                enterRoomAudio.play();
             }
         }
 
